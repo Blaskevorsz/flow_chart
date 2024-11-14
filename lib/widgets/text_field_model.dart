@@ -28,7 +28,7 @@ class textFieldModel extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
             child: TextField(
-              
+
               controller: arrowsUp,
               decoration: InputDecoration(
                 border: InputBorder.none,

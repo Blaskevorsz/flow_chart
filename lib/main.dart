@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_new
 
-import 'package:flow_chart/text_field_model.dart';
+import 'package:flow_chart/widgets/text_field_model.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -32,6 +32,7 @@ class MyPage extends StatelessWidget {
     TextEditingController lineLenght = TextEditingController();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: ListView(
           children: [
