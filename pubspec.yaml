@@ -1,0 +1,50 @@
+name: flow_chart
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  fonts:
+    - family: mlight
+      fonts:
+        - asset: fonts/Montserrat-Light.ttf
+    - family: mbold
+      fonts:
+        - asset: fonts/Montserrat-Bold.ttf
+    - family: mblack
+      fonts:
+        - asset: fonts/Montserrat-Black.ttf
+
+    - family: mregular
+      fonts:
+        - asset: fonts/Montserrat-Regular.ttf
+
+    - family: mmedium
+      fonts:
+        - asset: fonts/Montserrat-Medium.ttf
+
+    - family: mxlight
+      fonts:
+        - asset: fonts/Montserrat-ExtraLight.ttf
+    
+    - family: msbold
+      fonts:
+        - asset: fonts/Montserrat-SemiBold.ttf
+
+    - family: melightitalic
+      fonts:
+        - asset: fonts/Montserrat-ExtraLightItalic.ttf
+
+  uses-material-design: false
