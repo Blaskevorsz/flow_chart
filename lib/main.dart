@@ -2,7 +2,9 @@
 
 import 'package:flow_chart/widgets/text_field_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
+import 'package:toastification/toastification.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,11 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: false),
-      debugShowCheckedModeBanner: false,
-      title: 'Material App',
-      home: const MyPage(),
+    return ToastificationWrapper(
+      child: MaterialApp(
+        theme: ThemeData(useMaterial3: false),
+        debugShowCheckedModeBanner: false,
+        title: 'Material App',
+        home: const MyPage(),
+      ),
     );
   }
 }
@@ -44,6 +48,11 @@ class _MyPageState extends State<MyPage> {
   TextEditingController arrowPositionController = TextEditingController();
   TextEditingController arrowValueController = TextEditingController();
   TextEditingController lineLengthController = TextEditingController();
+  Map<int, TextEditingController> positionControllers = {};
+  Map<int, TextEditingController> valueControllers = {};
+  Map<int, TextEditingController> positionControllersDown = {};
+  Map<int, TextEditingController> valueControllersDown = {};
+
   int indexadd = 0;
   int indexadd2 = 0;
   bool isDisabled = false;
@@ -57,7 +66,16 @@ class _MyPageState extends State<MyPage> {
     const pageCount = 3;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+          title: const Text('Flow Chart by Hector & Jhoan'),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: size.height * 0.02,
+            fontFamily: 'msbold',
+          )),
       body: Center(
         child: ListView(
           children: [
@@ -67,7 +85,7 @@ class _MyPageState extends State<MyPage> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               width: size.width * 0.9,
-              height: size.height * 0.5,
+              height: size.height * 0.45,
               color: Colors.transparent,
               child: CustomPaint(
                 painter: FlowChartPainter(arrowsData: [
@@ -126,24 +144,98 @@ class _MyPageState extends State<MyPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        TextFieldModel(
-                                          enabled: !isDisabled,
-                                          size: size,
-                                          arrowsController:
-                                              lineLengthController,
-                                          title: 'Longitud',
+                                        Center(
+                                          child: SizedBox(
+                                            width: size.width * 0.25,
+                                            child: TextField(
+                                              onChanged: (value) {
+                                                setState(() {
+                                                
+                                                });
+                                              },
+                                              keyboardType: const TextInputType
+                                                  .numberWithOptions(
+                                                      signed: true),
+                                              inputFormatters: <TextInputFormatter>[
+                                                FilteringTextInputFormatter
+                                                    .allow(
+                                                  RegExp(r'^-?\d*$'),
+                                                ),
+                                              ],
+                                              enabled: !isDisabled,
+                                              controller: lineLengthController,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontFamily: 'msbold'),
+                                              cursorColor: Colors.black,
+                                              decoration: InputDecoration(
+                                                hintStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontFamily: 'mregular'),
+                                                hintText: 'Ingresa algo...',
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            size.width * 0.05,
+                                                        vertical:
+                                                            size.height * 0.02),
+                                                labelText: 'Longitud',
+                                                labelStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontFamily: 'mbold'),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 1.5),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.black,
+                                                      width: 2),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 1.5),
+                                                ),
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior.auto,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                         FloatingActionButton.extended(
-                                            backgroundColor: isDisabled == true
+                                            backgroundColor: isDisabled ||
+                                                    lineLengthController
+                                                        .text.isEmpty
                                                 ? Colors.grey
                                                 : Colors.black,
-                                            onPressed: isDisabled
+                                            onPressed: isDisabled ||
+                                                    lineLengthController
+                                                        .text.isEmpty
                                                 ? null
                                                 : () {
                                                     setState(() {
                                                       isDisabled = true;
                                                     });
                                                     setlength();
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Longitud establecida correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
                                                   },
                                             label: Text(
                                               'Establecer',
@@ -160,32 +252,52 @@ class _MyPageState extends State<MyPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextFieldModel(
-                                          enabled: true,
+                                          enabled: isDisabled,
                                           size: size,
                                           arrowsController:
                                               arrowPositionController,
                                           title: 'Posicion',
                                         ),
                                         TextFieldModel(
-                                            enabled: true,
+                                            enabled: isDisabled,
                                             size: size,
                                             arrowsController:
                                                 arrowValueController,
                                             title: 'Valor'),
                                         FloatingActionButton(
-                                            backgroundColor: Colors.green,
+                                            backgroundColor: !isDisabled
+                                                ? Colors.grey
+                                                : Colors.green,
+                                            onPressed: !isDisabled
+                                                ? null
+                                                : () {
+                                                    addArrowUp();
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Flecha agregada correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
+                                                  },
                                             child: const Icon(Icons
-                                                .keyboard_double_arrow_up_rounded),
-                                            onPressed: () {
-                                              addArrowUp();
-                                            }),
+                                                .keyboard_double_arrow_up_rounded)),
                                         FloatingActionButton(
-                                            backgroundColor: Colors.red,
+                                            backgroundColor: !isDisabled
+                                                ? Colors.grey
+                                                : Colors.red,
+                                            onPressed: !isDisabled
+                                                ? null
+                                                : () {
+                                                    addArrowDown();
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Flecha agregada correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
+                                                  },
                                             child: const Icon(Icons
-                                                .keyboard_double_arrow_down_rounded),
-                                            onPressed: () {
-                                              addArrowDown();
-                                            }),
+                                                .keyboard_double_arrow_down_rounded)),
                                       ],
                                     ),
                                   ],
@@ -220,28 +332,70 @@ class _MyPageState extends State<MyPage> {
                                                     enabled: true,
                                                     size: size,
                                                     arrowsController:
-                                                        arrowPositionController,
+                                                        getOrCreateController(
+                                                      positionControllers,
+                                                      index,
+                                                      listUp[index]['position'],
+                                                    ),
                                                     title:
                                                         '#${listUp[index]['position']}'),
                                                 TextFieldModel(
                                                     enabled: true,
                                                     size: size,
                                                     arrowsController:
-                                                        arrowValueController,
+                                                        getOrCreateController(
+                                                      valueControllers,
+                                                      index,
+                                                      listUp[index]['value'],
+                                                    ),
                                                     title:
                                                         '#${listUp[index]['value']}'),
                                                 FloatingActionButton(
                                                   onPressed: () {
                                                     setState(() {
                                                       listUp.removeAt(index);
+                                                      positionControllers[index]
+                                                          ?.dispose();
+                                                      valueControllers[index]
+                                                          ?.dispose();
+                                                      positionControllers
+                                                          .remove(index);
+                                                      valueControllers
+                                                          .remove(index);
                                                     });
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Eliminado correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
                                                   },
                                                   backgroundColor: Colors.red,
                                                   child:
                                                       const Icon(Icons.delete),
                                                 ),
                                                 FloatingActionButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      listUp[index]
+                                                              ['position'] =
+                                                          positionControllers[
+                                                                      index]
+                                                                  ?.text ??
+                                                              '';
+                                                      listUp[index]['value'] =
+                                                          valueControllers[
+                                                                      index]
+                                                                  ?.text ??
+                                                              '';
+                                                    });
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Actualizado correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
+                                                  },
                                                   backgroundColor: Colors.black,
                                                   child:
                                                       const Icon(Icons.update),
@@ -285,14 +439,23 @@ class _MyPageState extends State<MyPage> {
                                                     enabled: true,
                                                     size: size,
                                                     arrowsController:
-                                                        arrowPositionController,
+                                                        getOrCreateController(
+                                                      positionControllersDown,
+                                                      index,
+                                                      listDown[index]
+                                                          ['position'],
+                                                    ),
                                                     title:
                                                         '#${listDown[index]['position']}'),
                                                 TextFieldModel(
                                                     enabled: true,
                                                     size: size,
                                                     arrowsController:
-                                                        arrowValueController,
+                                                        getOrCreateController(
+                                                      valueControllersDown,
+                                                      index,
+                                                      listDown[index]['value'],
+                                                    ),
                                                     title:
                                                         '#${listDown[index]['value']}'),
                                                 FloatingActionButton(
@@ -300,13 +463,39 @@ class _MyPageState extends State<MyPage> {
                                                     setState(() {
                                                       listDown.removeAt(index);
                                                     });
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Eliminado correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
                                                   },
                                                   backgroundColor: Colors.red,
                                                   child:
                                                       const Icon(Icons.delete),
                                                 ),
                                                 FloatingActionButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      listDown[index]
+                                                              ['position'] =
+                                                          positionControllersDown[
+                                                                      index]
+                                                                  ?.text ??
+                                                              '';
+                                                      listDown[index]['value'] =
+                                                          valueControllersDown[
+                                                                      index]
+                                                                  ?.text ??
+                                                              '';
+                                                    });
+                                                    showNotification(
+                                                        size,
+                                                        'Exito!',
+                                                        'Actualizado correctamente',
+                                                        Icons.check,
+                                                        Colors.green);
+                                                  },
                                                   backgroundColor: Colors.black,
                                                   child:
                                                       const Icon(Icons.update),
@@ -363,6 +552,16 @@ class _MyPageState extends State<MyPage> {
                             lineWidth = 0;
                             listUp.clear();
                             listDown.clear();
+                            selectedPage = 0;
+                            _pageController.animateToPage(0,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.bounceIn);
+                            showNotification(
+                                size,
+                                'Exito!',
+                                'Todo se reinicio correctamente',
+                                Icons.check,
+                                Colors.green);
                           });
                         },
                   label: Text(
@@ -385,6 +584,16 @@ class _MyPageState extends State<MyPage> {
   List<Map<String, dynamic>> listUp = [];
   List<Map<String, dynamic>> listDown = [];
 
+  TextEditingController getOrCreateController(
+      Map<int, TextEditingController> controllers,
+      int index,
+      String initialValue) {
+    if (!controllers.containsKey(index)) {
+      controllers[index] = TextEditingController(text: initialValue);
+    }
+    return controllers[index]!;
+  }
+
   void setlength() {
     if (int.tryParse(lineLengthController.text) != null) {
       setState(() {
@@ -396,15 +605,20 @@ class _MyPageState extends State<MyPage> {
   }
 
   void addArrowUp() {
-    setState(() {
-      listUp.add({
-        'position': arrowPositionController.text,
-        'value': arrowValueController.text,
-      });
+    listUp.add({
+      'position': arrowPositionController.text,
+      'value': arrowValueController.text
     });
-    indexadd2++;
-    arrowPositionController.clear();
-    arrowValueController.clear();
+
+    setState(() {
+      int index = listUp.length - 1;
+      positionControllers[index] =
+          TextEditingController(text: arrowPositionController.text);
+      valueControllers[index] =
+          TextEditingController(text: arrowValueController.text);
+      arrowPositionController.clear();
+      arrowValueController.clear();
+    });
   }
 
   void addArrowDown() {
@@ -421,6 +635,72 @@ class _MyPageState extends State<MyPage> {
 
   void drawFlowChart() {
     for (var i = 0; i < listUp.length; i++) {}
+  }
+
+  void showNotification(size, title, description, icon, iconColor) {
+    toastification.show(
+      context: context, // optional if you use ToastificationWrapper
+      type: ToastificationType.success,
+      style: ToastificationStyle.flat,
+      autoCloseDuration: const Duration(seconds: 2),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: size.height * 0.02,
+          fontFamily: 'msbold',
+        ),
+      ),
+      // you can also use RichText widget for title and description parameters
+      description: RichText(
+          text: TextSpan(
+        text: description,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: size.height * 0.015,
+          fontFamily: 'mregular',
+        ),
+      )),
+      alignment: Alignment.topRight,
+      direction: TextDirection.ltr,
+      animationDuration: const Duration(milliseconds: 300),
+      animationBuilder: (context, animation, alignment, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+      icon: Icon(icon),
+      showIcon: true, // show or hide the icon
+      primaryColor: iconColor,
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: const [
+        BoxShadow(
+          color: Color(0x07000000),
+          blurRadius: 16,
+          offset: Offset(0, 16),
+          spreadRadius: 0,
+        )
+      ],
+      showProgressBar: true,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+      applyBlurEffect: true,
+      callbacks: ToastificationCallbacks(
+        onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
+        onCloseButtonTap: (toastItem) =>
+            print('Toast ${toastItem.id} close button tapped'),
+        onAutoCompleteCompleted: (toastItem) =>
+            print('Toast ${toastItem.id} auto complete completed'),
+        onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
+      ),
+    );
   }
 }
 

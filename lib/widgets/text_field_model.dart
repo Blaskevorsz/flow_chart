@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFieldModel extends StatelessWidget {
   const TextFieldModel(
@@ -19,6 +20,14 @@ class TextFieldModel extends StatelessWidget {
       child: SizedBox(
         width: size.width * 0.25,
         child: TextField(
+          keyboardType:
+              const TextInputType.numberWithOptions(signed: true),
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(
+              RegExp(
+                  r'^-?\d*$'),
+            ),
+          ],
           enabled: enabled,
           controller: arrowsController,
           style: const TextStyle(
