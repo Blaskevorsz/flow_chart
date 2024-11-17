@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class textFieldModel extends StatelessWidget {
-  const textFieldModel(
+class TextFieldModel extends StatelessWidget {
+  const TextFieldModel(
       {super.key,
       required this.size,
       required this.arrowsController,
@@ -21,11 +21,11 @@ class textFieldModel extends StatelessWidget {
         child: TextField(
           enabled: enabled,
           controller: arrowsController,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.black, fontSize: 16, fontFamily: 'msbold'),
           cursorColor: Colors.black,
           decoration: InputDecoration(
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
                 color: Colors.black, fontSize: 16, fontFamily: 'mregular'),
             hintText: 'Ingresa algo...',
             contentPadding: EdgeInsets.symmetric(
