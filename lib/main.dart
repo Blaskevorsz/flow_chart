@@ -149,13 +149,11 @@ class _MyPageState extends State<MyPage> {
                                             width: size.width * 0.25,
                                             child: TextField(
                                               onChanged: (value) {
-                                                setState(() {
-                                                
-                                                });
+                                                setState(() {});
                                               },
                                               keyboardType: const TextInputType
                                                   .numberWithOptions(
-                                                      signed: true),
+                                                  signed: true),
                                               inputFormatters: <TextInputFormatter>[
                                                 FilteringTextInputFormatter
                                                     .allow(
@@ -226,16 +224,28 @@ class _MyPageState extends State<MyPage> {
                                                         .text.isEmpty
                                                 ? null
                                                 : () {
-                                                    setState(() {
-                                                      isDisabled = true;
-                                                    });
-                                                    setlength();
-                                                    showNotification(
-                                                        size,
-                                                        'Exito!',
-                                                        'Longitud establecida correctamente',
-                                                        Icons.check,
-                                                        Colors.green);
+                                                    if (lineLengthController
+                                                        .text
+                                                        .contains('-')) {
+                                                      showNotification(
+                                                          size,
+                                                          'Error',
+                                                          'La longitud debe ser un numero valido',
+                                                          Icons
+                                                              .no_encryption_rounded,
+                                                          Colors.red);
+                                                    } else {
+                                                      setState(() {
+                                                        isDisabled = true;
+                                                      });
+                                                      setlength();
+                                                      showNotification(
+                                                          size,
+                                                          'Exito!',
+                                                          'Longitud establecida correctamente',
+                                                          Icons.check,
+                                                          Colors.green);
+                                                    }
                                                   },
                                             label: Text(
                                               'Establecer',
@@ -271,13 +281,36 @@ class _MyPageState extends State<MyPage> {
                                             onPressed: !isDisabled
                                                 ? null
                                                 : () {
-                                                    addArrowUp();
-                                                    showNotification(
-                                                        size,
-                                                        'Exito!',
-                                                        'Flecha agregada correctamente',
-                                                        Icons.check,
-                                                        Colors.green);
+                                                    if (arrowPositionController
+                                                            .text
+                                                            .contains('-') ||
+                                                        arrowPositionController
+                                                            .text.isEmpty) {
+                                                      showNotification(
+                                                          size,
+                                                          'Aviso',
+                                                          'Debe introducir una posicion valida',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
+                                                    } else if (arrowValueController.text.isEmpty){
+
+                                                      showNotification(
+                                                          size,
+                                                          'Aviso',
+                                                          'Debe introducir un valor valido',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
+
+
+                                                    } else {
+                                                      addArrowUp();
+                                                      showNotification(
+                                                          size,
+                                                          'Exito!',
+                                                          'Flecha agregada correctamente',
+                                                          Icons.check,
+                                                          Colors.green);
+                                                    }
                                                   },
                                             child: const Icon(Icons
                                                 .keyboard_double_arrow_up_rounded)),
@@ -288,13 +321,23 @@ class _MyPageState extends State<MyPage> {
                                             onPressed: !isDisabled
                                                 ? null
                                                 : () {
-                                                    addArrowDown();
-                                                    showNotification(
-                                                        size,
-                                                        'Exito!',
-                                                        'Flecha agregada correctamente',
-                                                        Icons.check,
-                                                        Colors.green);
+                                                    if (arrowPositionController
+                                                        .text.isEmpty) {
+                                                      showNotification(
+                                                          size,
+                                                          'Aviso',
+                                                          'Debe introducir una posicion valida',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
+                                                    } else {
+                                                      addArrowDown();
+                                                      showNotification(
+                                                          size,
+                                                          'Exito!',
+                                                          'Flecha agregada correctamente',
+                                                          Icons.check,
+                                                          Colors.green);
+                                                    }
                                                   },
                                             child: const Icon(Icons
                                                 .keyboard_double_arrow_down_rounded)),
@@ -349,7 +392,7 @@ class _MyPageState extends State<MyPage> {
                                                       listUp[index]['value'],
                                                     ),
                                                     title:
-                                                        '#${listUp[index]['value']}'),
+                                                        '#${listUp[index]['position']}'),
                                                 FloatingActionButton(
                                                   onPressed: () {
                                                     setState(() {
@@ -376,7 +419,15 @@ class _MyPageState extends State<MyPage> {
                                                 ),
                                                 FloatingActionButton(
                                                   onPressed: () {
-                                                    setState(() {
+                                                    if (positionControllers[index]!.text.isEmpty || positionControllers[index]!.text.contains('-')) {
+                                                      showNotification(
+                                                        size,
+                                                        'Aviso',
+                                                        'Debes ingresar una posicion valida para actualizar',
+                                                        Icons.warning_rounded,
+                                                        Colors.orange);
+                                                    } else {
+                                                      setState(() {
                                                       listUp[index]
                                                               ['position'] =
                                                           positionControllers[
@@ -395,6 +446,8 @@ class _MyPageState extends State<MyPage> {
                                                         'Actualizado correctamente',
                                                         Icons.check,
                                                         Colors.green);
+                                                    }
+                                                    
                                                   },
                                                   backgroundColor: Colors.black,
                                                   child:
@@ -457,7 +510,7 @@ class _MyPageState extends State<MyPage> {
                                                       listDown[index]['value'],
                                                     ),
                                                     title:
-                                                        '#${listDown[index]['value']}'),
+                                                        '#${listDown[index]['position']}'),
                                                 FloatingActionButton(
                                                   onPressed: () {
                                                     setState(() {
@@ -476,7 +529,15 @@ class _MyPageState extends State<MyPage> {
                                                 ),
                                                 FloatingActionButton(
                                                   onPressed: () {
-                                                    setState(() {
+                                                    if (positionControllersDown[index]!.text.isEmpty || positionControllersDown[index]!.text.contains('-')) {
+                                                      showNotification(
+                                                        size,
+                                                        'Aviso',
+                                                        'Debes ingresar una posicion valida para actualizar',
+                                                        Icons.warning_rounded,
+                                                        Colors.orange);
+                                                    } else {
+                                                      setState(() {
                                                       listDown[index]
                                                               ['position'] =
                                                           positionControllersDown[
@@ -495,6 +556,7 @@ class _MyPageState extends State<MyPage> {
                                                         'Actualizado correctamente',
                                                         Icons.check,
                                                         Colors.green);
+                                                    }
                                                   },
                                                   backgroundColor: Colors.black,
                                                   child:
@@ -716,12 +778,38 @@ class FlowChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     _drawCentralLine(canvas, size);
+    _drawNumbers(canvas, size);
 
     for (var arrow in arrowsData) {
       bool isUp = arrow['isUp'];
       double xPosition = size.width / lineWidth * int.parse(arrow['position']);
       String value = arrow['value'].toString();
       _drawArrow(canvas, size, xPosition, isUp, value);
+    }
+  }
+
+  void _drawNumbers(Canvas canvas, Size size) {
+    int counter = 0;
+
+    for (int i = 0; i <= lineWidth; i++) {
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: counter.toString(),
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+
+      final textOffset = Offset(
+          size.width / lineWidth * i - (textPainter.width / 2),
+          size.height * 0.52);
+
+      textPainter.paint(canvas, textOffset);
+      counter++;
     }
   }
 
@@ -769,6 +857,7 @@ class FlowChartPainter extends CustomPainter {
     final textOffset = Offset(
         xPosition - (textPainter.width / 2), isUp ? yStart - 22 : yEnd + 135);
     textPainter.paint(canvas, textOffset);
+    print('textpainternormal width: ${textPainter.width}');
   }
 
   @override
