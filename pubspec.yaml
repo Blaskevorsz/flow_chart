@@ -11,13 +11,33 @@ dependencies:
     sdk: flutter
   page_view_dot_indicator: ^2.3.0
   toastification: ^2.3.0
+  flutter_native_splash: ^2.4.3
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/app_icon.png"
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/app_splash.png
+  android_12:
+    image: assets/app_splash.png
+    color: "#000000"
+    icon_background_color: "#000000"
+
 flutter:
+
+  assets: 
+    - assets/
+
   fonts:
     - family: mlight
       fonts:
