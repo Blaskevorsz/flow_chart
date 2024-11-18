@@ -285,23 +285,29 @@ class _MyPageState extends State<MyPage> {
                                                             .text
                                                             .contains('-') ||
                                                         arrowPositionController
-                                                            .text.isEmpty) {
+                                                            .text.isEmpty ||
+                                                        int.parse(
+                                                                arrowPositionController
+                                                                    .text) >
+                                                            lineWidth ||
+                                                        int.parse(
+                                                                arrowPositionController
+                                                                    .text) <
+                                                            0) {
                                                       showNotification(
                                                           size,
                                                           'Aviso',
                                                           'Debe introducir una posicion valida',
                                                           Icons.warning_rounded,
                                                           Colors.orange);
-                                                    } else if (arrowValueController.text.isEmpty){
-
+                                                    } else if (arrowValueController
+                                                        .text.isEmpty) {
                                                       showNotification(
                                                           size,
                                                           'Aviso',
                                                           'Debe introducir un valor valido',
                                                           Icons.warning_rounded,
                                                           Colors.orange);
-
-
                                                     } else {
                                                       addArrowUp();
                                                       showNotification(
@@ -322,7 +328,15 @@ class _MyPageState extends State<MyPage> {
                                                 ? null
                                                 : () {
                                                     if (arrowPositionController
-                                                        .text.isEmpty) {
+                                                            .text.isEmpty ||
+                                                        int.parse(
+                                                                arrowPositionController
+                                                                    .text) >
+                                                            lineWidth ||
+                                                        int.parse(
+                                                                arrowPositionController
+                                                                    .text) <
+                                                            0) {
                                                       showNotification(
                                                           size,
                                                           'Aviso',
@@ -419,35 +433,51 @@ class _MyPageState extends State<MyPage> {
                                                 ),
                                                 FloatingActionButton(
                                                   onPressed: () {
-                                                    if (positionControllers[index]!.text.isEmpty || positionControllers[index]!.text.contains('-')) {
+                                                    if (positionControllers[
+                                                                index]!
+                                                            .text
+                                                            .isEmpty ||
+                                                        positionControllers[
+                                                                index]!
+                                                            .text
+                                                            .contains('-') ||
+                                                        int.parse(
+                                                                positionControllers[
+                                                                        index]!
+                                                                    .text) >
+                                                            lineWidth ||
+                                                        int.parse(
+                                                                positionControllers[
+                                                                        index]!
+                                                                    .text) <
+                                                            0) {
                                                       showNotification(
-                                                        size,
-                                                        'Aviso',
-                                                        'Debes ingresar una posicion valida para actualizar',
-                                                        Icons.warning_rounded,
-                                                        Colors.orange);
+                                                          size,
+                                                          'Aviso',
+                                                          'Debes ingresar una posicion valida para actualizar',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
                                                     } else {
                                                       setState(() {
-                                                      listUp[index]
-                                                              ['position'] =
-                                                          positionControllers[
-                                                                      index]
-                                                                  ?.text ??
-                                                              '';
-                                                      listUp[index]['value'] =
-                                                          valueControllers[
-                                                                      index]
-                                                                  ?.text ??
-                                                              '';
-                                                    });
-                                                    showNotification(
-                                                        size,
-                                                        'Exito!',
-                                                        'Actualizado correctamente',
-                                                        Icons.check,
-                                                        Colors.green);
+                                                        listUp[index]
+                                                                ['position'] =
+                                                            positionControllers[
+                                                                        index]
+                                                                    ?.text ??
+                                                                '';
+                                                        listUp[index]['value'] =
+                                                            valueControllers[
+                                                                        index]
+                                                                    ?.text ??
+                                                                '';
+                                                      });
+                                                      showNotification(
+                                                          size,
+                                                          'Exito!',
+                                                          'Actualizado correctamente',
+                                                          Icons.check,
+                                                          Colors.green);
                                                     }
-                                                    
                                                   },
                                                   backgroundColor: Colors.black,
                                                   child:
@@ -529,33 +559,51 @@ class _MyPageState extends State<MyPage> {
                                                 ),
                                                 FloatingActionButton(
                                                   onPressed: () {
-                                                    if (positionControllersDown[index]!.text.isEmpty || positionControllersDown[index]!.text.contains('-')) {
+                                                    if (positionControllersDown[
+                                                                index]!
+                                                            .text
+                                                            .isEmpty ||
+                                                        positionControllersDown[
+                                                                index]!
+                                                            .text
+                                                            .contains('-') ||
+                                                        int.parse(
+                                                                positionControllersDown[
+                                                                        index]!
+                                                                    .text) >
+                                                            lineWidth ||
+                                                        int.parse(
+                                                                positionControllersDown[
+                                                                        index]!
+                                                                    .text) <
+                                                            0) {
                                                       showNotification(
-                                                        size,
-                                                        'Aviso',
-                                                        'Debes ingresar una posicion valida para actualizar',
-                                                        Icons.warning_rounded,
-                                                        Colors.orange);
+                                                          size,
+                                                          'Aviso',
+                                                          'Debes ingresar una posicion valida para actualizar',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
                                                     } else {
                                                       setState(() {
-                                                      listDown[index]
-                                                              ['position'] =
-                                                          positionControllersDown[
-                                                                      index]
-                                                                  ?.text ??
-                                                              '';
-                                                      listDown[index]['value'] =
-                                                          valueControllersDown[
-                                                                      index]
-                                                                  ?.text ??
-                                                              '';
-                                                    });
-                                                    showNotification(
-                                                        size,
-                                                        'Exito!',
-                                                        'Actualizado correctamente',
-                                                        Icons.check,
-                                                        Colors.green);
+                                                        listDown[index]
+                                                                ['position'] =
+                                                            positionControllersDown[
+                                                                        index]
+                                                                    ?.text ??
+                                                                '';
+                                                        listDown[index]
+                                                                ['value'] =
+                                                            valueControllersDown[
+                                                                        index]
+                                                                    ?.text ??
+                                                                '';
+                                                      });
+                                                      showNotification(
+                                                          size,
+                                                          'Exito!',
+                                                          'Actualizado correctamente',
+                                                          Icons.check,
+                                                          Colors.green);
                                                     }
                                                   },
                                                   backgroundColor: Colors.black,
@@ -661,8 +709,6 @@ class _MyPageState extends State<MyPage> {
       setState(() {
         lineWidth = int.parse(lineLengthController.text);
       });
-    } else {
-      // Mostrar un mensaje de error o manejar la entrada inválida
     }
   }
 
@@ -701,7 +747,7 @@ class _MyPageState extends State<MyPage> {
 
   void showNotification(size, title, description, icon, iconColor) {
     toastification.show(
-      context: context, // optional if you use ToastificationWrapper
+      context: context,
       type: ToastificationType.success,
       style: ToastificationStyle.flat,
       autoCloseDuration: const Duration(seconds: 2),
@@ -713,7 +759,7 @@ class _MyPageState extends State<MyPage> {
           fontFamily: 'msbold',
         ),
       ),
-      // you can also use RichText widget for title and description parameters
+      
       description: RichText(
           text: TextSpan(
         text: description,
@@ -733,7 +779,7 @@ class _MyPageState extends State<MyPage> {
         );
       },
       icon: Icon(icon),
-      showIcon: true, // show or hide the icon
+      showIcon: true, 
       primaryColor: iconColor,
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
@@ -857,7 +903,6 @@ class FlowChartPainter extends CustomPainter {
     final textOffset = Offset(
         xPosition - (textPainter.width / 2), isUp ? yStart - 22 : yEnd + 135);
     textPainter.paint(canvas, textOffset);
-    print('textpainternormal width: ${textPainter.width}');
   }
 
   @override

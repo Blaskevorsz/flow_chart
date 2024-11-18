@@ -20,12 +20,10 @@ class TextFieldModel extends StatelessWidget {
       child: SizedBox(
         width: size.width * 0.25,
         child: TextField(
-          keyboardType:
-              const TextInputType.numberWithOptions(signed: true),
+          keyboardType: const TextInputType.numberWithOptions(signed: true),
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.allow(
-              RegExp(
-                  r'^-?\d*$'),
+              RegExp(r'^-?\d*$'),
             ),
           ],
           enabled: enabled,
