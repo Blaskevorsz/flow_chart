@@ -67,7 +67,7 @@ class _MyPageState extends State<MyPage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Flow Chart by Hector & Jhoan'),
+          title: const Text('Eco Flow Chart:)'),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -343,6 +343,14 @@ class _MyPageState extends State<MyPage> {
                                                           'Debe introducir una posicion valida',
                                                           Icons.warning_rounded,
                                                           Colors.orange);
+                                                    } else if (arrowValueController
+                                                        .text.isEmpty) {
+                                                      showNotification(
+                                                          size,
+                                                          'Aviso',
+                                                          'Debe introducir un valor valido',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
                                                     } else {
                                                       addArrowDown();
                                                       showNotification(
@@ -455,6 +463,16 @@ class _MyPageState extends State<MyPage> {
                                                           size,
                                                           'Aviso',
                                                           'Debes ingresar una posicion valida para actualizar',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
+                                                    } else if (valueControllers[
+                                                            index]!
+                                                        .text
+                                                        .isEmpty) {
+                                                      showNotification(
+                                                          size,
+                                                          'Aviso',
+                                                          'Debe introducir un valor valido',
                                                           Icons.warning_rounded,
                                                           Colors.orange);
                                                     } else {
@@ -581,6 +599,16 @@ class _MyPageState extends State<MyPage> {
                                                           size,
                                                           'Aviso',
                                                           'Debes ingresar una posicion valida para actualizar',
+                                                          Icons.warning_rounded,
+                                                          Colors.orange);
+                                                    } else if (valueControllersDown[
+                                                            index]!
+                                                        .text
+                                                        .isEmpty) {
+                                                      showNotification(
+                                                          size,
+                                                          'Aviso',
+                                                          'Debe introducir un valor valido',
                                                           Icons.warning_rounded,
                                                           Colors.orange);
                                                     } else {
@@ -759,7 +787,6 @@ class _MyPageState extends State<MyPage> {
           fontFamily: 'msbold',
         ),
       ),
-      
       description: RichText(
           text: TextSpan(
         text: description,
@@ -779,7 +806,7 @@ class _MyPageState extends State<MyPage> {
         );
       },
       icon: Icon(icon),
-      showIcon: true, 
+      showIcon: true,
       primaryColor: iconColor,
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
