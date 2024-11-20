@@ -59,6 +59,7 @@ class _MyPageState extends State<MyPage> {
   int lineWidth = 0;
   bool isRemoved = false;
   int positionRemoved = 0;
+  bool showNumbers = false;
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +89,26 @@ class _MyPageState extends State<MyPage> {
               height: size.height * 0.45,
               color: Colors.transparent,
               child: CustomPaint(
-                painter: FlowChartPainter(arrowsData: [
-                  for (int i = 0; i < listUp.length; i++)
-                    {
-                      'isUp': true,
-                      'position': listUp[i]['position'],
-                      'value': listUp[i]['value'],
-                    },
-                  for (int i = 0; i < listDown.length; i++)
-                    {
-                      'isUp': false,
-                      'position': listDown[i]['position'],
-                      'value': listDown[i]['value'],
-                    },
-                ], lineWidth: lineWidth),
-                size: Size(size.width * 0.9, size.height * 0.5),
+                painter: FlowChartPainter(showNumbers,
+                    arrowsData: [
+                      for (int i = 0; i < listUp.length; i++)
+                        {
+                          'isUp': true,
+                          'position': listUp[i]['position'],
+                          'value': listUp[i]['value'],
+                        },
+                      for (int i = 0; i < listDown.length; i++)
+                        {
+                          'isUp': false,
+                          'position': listDown[i]['position'],
+                          'value': listDown[i]['value'],
+                        },
+                    ],
+                    lineWidth: lineWidth),
+                size: Size(
+                  size.width * 0.9,
+                  size.height * 0.5,
+                ),
               ),
             ),
             Padding(
@@ -144,6 +150,15 @@ class _MyPageState extends State<MyPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
+                                        Checkbox(
+                                            activeColor: Colors.black,
+                                            value: showNumbers,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                value = !showNumbers;
+                                                showNumbers = value!;
+                                              });
+                                            }),
                                         Center(
                                           child: SizedBox(
                                             width: size.width * 0.25,
@@ -254,7 +269,7 @@ class _MyPageState extends State<MyPage> {
                                                 fontSize: size.height * 0.02,
                                                 fontFamily: 'mbold',
                                               ),
-                                            ))
+                                            )),
                                       ],
                                     ),
                                     Row(
@@ -694,6 +709,7 @@ class _MyPageState extends State<MyPage> {
                             _pageController.animateToPage(0,
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.bounceIn);
+                            showNumbers = false;
                             showNotification(
                                 size,
                                 'Exito!',
@@ -842,8 +858,10 @@ class _MyPageState extends State<MyPage> {
 class FlowChartPainter extends CustomPainter {
   final List<Map<String, dynamic>> arrowsData;
   final int lineWidth;
+  final bool showNumbers;
 
-  FlowChartPainter({
+  FlowChartPainter(
+    this.showNumbers, {
     required this.arrowsData,
     required this.lineWidth,
   });
@@ -851,7 +869,10 @@ class FlowChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     _drawCentralLine(canvas, size);
-    _drawNumbers(canvas, size);
+
+    if (showNumbers == true) {
+      _drawNumbers(canvas, size);
+    }
 
     for (var arrow in arrowsData) {
       bool isUp = arrow['isUp'];
